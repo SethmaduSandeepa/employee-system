@@ -224,8 +224,31 @@ function EmployeeList({ onBack }) {
         onUpdate={handleProfileUpdate}
       />
       {onBack && (
-        <Box sx={{ position: 'fixed', top: 32, right: 32, zIndex: 1200 }}>
-          <Button onClick={onBack} variant="contained" color="secondary" sx={{ fontWeight: 700, fontSize: 18, px: 3, py: 1.2, borderRadius: 3, boxShadow: '0 2px 8px #bdbdbd' }}>
+        <Box sx={{ position: 'fixed', top: 36, right: 36, zIndex: 1200 }}>
+          <Button
+            onClick={onBack}
+            variant="outlined"
+            color="primary"
+            size="medium"
+            sx={{
+              fontWeight: 500,
+              fontSize: 16,
+              px: 2,
+              py: 0.8,
+              borderRadius: 2,
+              boxShadow: 'none',
+              background: '#fff',
+              color: '#1976d2',
+              border: '1.5px solid #1976d2',
+              textShadow: 'none',
+              transition: 'all 0.2s',
+              '&:hover': {
+                background: '#e3f2fd',
+                color: '#1565c0',
+                border: '2px solid #1565c0',
+              }
+            }}
+          >
             ← Home
           </Button>
         </Box>

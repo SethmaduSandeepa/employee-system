@@ -43,27 +43,25 @@ function App() {
               overflowY: 'auto',
               mt: 12,
             }}>
-              {/* Show Employee List Button */}
               {!showList && (
                 <Button
                   variant="outlined"
-                  color="secondary"
-                  size="small"
-                  startIcon={<span role="img" aria-label="list" style={{ fontSize: 18 }}>📋</span>}
+                  color="primary"
+                  size="medium"
                   sx={{
                     position: 'fixed',
                     top: 36,
                     right: 36,
                     borderRadius: 2,
-                    px: 1.5,
-                    py: 0.5,
+                    px: 2,
+                    py: 0.8,
                     fontWeight: 500,
-                    fontSize: 14,
+                    fontSize: 16,
                     letterSpacing: 0.5,
                     boxShadow: 'none',
                     background: '#fff',
                     color: '#1976d2',
-                    border: '1px solid #bdbdbd',
+                    border: '1.5px solid #1976d2',
                     textShadow: 'none',
                     mb: 1,
                     zIndex: 9999,
@@ -71,9 +69,9 @@ function App() {
                     maxWidth: 'calc(100vw - 64px)',
                     overflow: 'visible',
                     '&:hover': {
-                      background: '#f5f6fa',
+                      background: '#e3f2fd',
                       color: '#1565c0',
-                      border: '1.5px solid #1976d2',
+                      border: '2px solid #1565c0',
                     }
                   }}
                   onClick={() => setShowList(true)}

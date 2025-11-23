@@ -68,14 +68,14 @@ function EmployeeForm({ onSuccess }) {
   };
 
   return (
-    <Paper elevation={6} sx={{ maxWidth: 540, mx: 'auto', my: 5, p: 4, borderRadius: 4, background: 'linear-gradient(135deg, #e3f2fd 60%, #fff 100%)', boxShadow: 8 }}>
-      <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
-        <Avatar sx={{ bgcolor: '#1976d2', width: 64, height: 64, mb: 1 }}>
-          <PersonIcon sx={{ fontSize: 40 }} />
+    <Paper elevation={1} sx={{ maxWidth: 480, mx: 'auto', my: 4, p: 3, borderRadius: 3, background: '#fafbfc', boxShadow: 1 }}>
+      <Box display="flex" flexDirection="column" alignItems="center" mb={1}>
+        <Avatar sx={{ bgcolor: '#bdbdbd', width: 48, height: 48, mb: 1 }}>
+          <PersonIcon sx={{ fontSize: 28, color: '#757575' }} />
         </Avatar>
-        <Typography variant="h5" sx={{ fontWeight: 700, color: '#1976d2', letterSpacing: 1 }}>Add Employee</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 500, color: '#424242', letterSpacing: 0.5 }}>Add Employee</Typography>
       </Box>
-      <Divider sx={{ mb: 2 }} />
+      <Divider sx={{ mb: 1 }} />
       {message && <Alert severity="success" sx={{ mb: 2 }}>{message}</Alert>}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <Box component="form" onSubmit={handleSubmit} autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
