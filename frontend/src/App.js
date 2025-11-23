@@ -14,7 +14,8 @@ function App() {
   const handleLogin = () => setIsLoggedIn(true);
 
   return (
-    <Routes>
+    <Box sx={{ minHeight: '100vh', width: '100vw', position: 'relative' }}>
+      <Routes>
       {/* Show AdminLogin at root until logged in */}
       <Route
         path="/"
@@ -118,7 +119,28 @@ function App() {
       />
       {/* Fallback: redirect all other routes to root */}
       <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+      </Routes>
+      {/* Watermark at the bottom of every page */}
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 16,
+          left: 0,
+          width: '100vw',
+          textAlign: 'center',
+          pointerEvents: 'none',
+          zIndex: 0,
+          opacity: 0.38,
+          fontSize: { xs: 18, sm: 22, md: 28 },
+          fontWeight: 800,
+          color: '#1976d2',
+          userSelect: 'none',
+          letterSpacing: 2,
+        }}
+      >
+        Produced by the TASMA IT Department
+      </Box>
+    </Box>
   );
 }
 
