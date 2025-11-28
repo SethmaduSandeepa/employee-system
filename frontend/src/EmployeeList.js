@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import EmployeeProfile from './EmployeeProfile';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar, Typography, TextField, Button, Box, Tooltip, InputAdornment, Divider } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar, Typography, TextField, Button, Box, Tooltip, InputAdornment, Divider, MenuItem } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -12,9 +12,11 @@ import SearchIcon from '@mui/icons-material/Search';
 
 
 function EmployeeList({ onBack }) {
-
   // State declarations must come first
   const [employees, setEmployees] = useState([]);
+  const [districtFilter, setDistrictFilter] = useState('');
+  // Get unique districts for dropdown
+  const districts = Array.from(new Set(employees.map(emp => emp.district).filter(Boolean))).sort();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
@@ -63,37 +65,77 @@ function EmployeeList({ onBack }) {
     setSelectedEmployee(null);
   };
 
-  // Filter employees by NIC number only
-  const filtered = employees.filter(emp =>
-    emp.nicNumber && emp.nicNumber.toLowerCase().includes(search.toLowerCase())
-  );
+  // Filter employees by NIC number and district
+  const filtered = employees.filter(emp => {
+    const matchesSearch = emp.nicNumber && emp.nicNumber.toLowerCase().includes(search.toLowerCase());
+    const matchesDistrict = !districtFilter || emp.district === districtFilter;
+    return matchesSearch && matchesDistrict;
+  });
 
   if (loading) return <Typography align="center" sx={{ mt: 4 }}>Loading employees...</Typography>;
   if (error) return <Typography color="error" align="center" sx={{ mt: 4 }}>{error}</Typography>;
 
   return (
     <Box sx={{ p: 0, pt: 0, mt: 0 }}>
-      {/* Chart summary above the table */}
-      {chartData.length > 0 && (
-        <Paper elevation={3} sx={{ mb: 4, p: 2, maxWidth: 700, mx: 'auto', background: '#f5f7fa' }}>
-          <Typography variant="h6" align="center" sx={{ fontWeight: 600, color: '#1976d2', mb: 2 }}>
-            Employee Count by District
-          </Typography>
-          <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="district" fontSize={13} angle={-20} textAnchor="end" height={60} interval={0} />
-              <YAxis allowDecimals={false} fontSize={13} />
-              <RechartsTooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#1976d2" name="Employees" barSize={32} />
-            </BarChart>
-          </ResponsiveContainer>
-        </Paper>
+      {/* Show titles only when all districts are selected */}
+      {(!districtFilter || districtFilter === '') && (
+        <>
+          <Typography variant="h4" align="center" sx={{ fontWeight: 700, color: '#1976d2', mb: 1, mt: 8, width: '100%' }}>TASMA EMPLOYEE SYSTEM</Typography>
+          <Typography variant="h6" align="center" sx={{ fontWeight: 600, color: '#1976d2', mb: 2, mt: 1, width: '100%' }}>Employee List</Typography>
+        </>
       )}
-      <Typography variant="h4" align="center" sx={{ fontWeight: 700, color: '#1976d2', mb: 2, mt: 0, width: '100%' }}>TASMA EMPLOYEE SYSTEM</Typography>
-      <Typography variant="h6" align="center" sx={{ fontWeight: 600, color: '#1976d2', mb: 2, width: '100%' }}>Employee List</Typography>
-      <Box display="flex" justifyContent="center" width="100%" mb={3}>
+      <Divider sx={{ mb: 1, background: '#b3c6e0' }} />
+      {/* Download CSV for filtered employees */}
+      <Typography variant="subtitle1" align="center" sx={{ fontWeight: 500, color: '#1976d2', mb: 0.5 }}>
+        Export Data
+      </Typography>
+      <Box display="flex" justifyContent="center" width="100%" mb={1}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ fontWeight: 600, borderRadius: 2, boxShadow: 'none', textTransform: 'none' }}
+          onClick={() => {
+            // Prepare CSV content for filtered employees
+            const csvRows = [];
+            const headers = ['Full Name', 'NIC Number', 'Date of Birth', 'Age', 'Sex', 'District', 'Permanent Address', 'Temporary Address', 'Contact Details'];
+            csvRows.push(headers.join(','));
+            filtered.forEach(emp => {
+              const row = [
+                emp.fullName,
+                emp.nicNumber,
+                new Date(emp.dateOfBirth).toLocaleDateString(),
+                emp.age,
+                emp.sex,
+                emp.district,
+                emp.permanentAddress,
+                emp.temporaryAddress,
+                emp.contactDetails
+              ].map(val => '"' + (val ? String(val).replace(/"/g, '""') : '') + '"').join(',');
+              csvRows.push(row);
+            });
+            const csvContent = csvRows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = districtFilter && districtFilter !== '' ? `employees_${districtFilter}.csv` : 'employees.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }}
+        >
+          Download CSV {districtFilter && districtFilter !== '' ? `(${districtFilter})` : ''}
+        </Button>
+      </Box>
+      {/* Show titles only when all districts are selected */}
+      {(!districtFilter || districtFilter === '') && (
+        <>
+          <Typography variant="h4" align="center" sx={{ fontWeight: 700, color: '#1976d2', mb: 2, mt: 60, width: '100%' }}>TASMA EMPLOYEE SYSTEM</Typography>
+          <Typography variant="h6" align="center" sx={{ fontWeight: 600, color: '#1976d2', mb: 4, mt: 24, width: '100%' }}>Employee List</Typography>
+        </>
+      )}
+      <Box display="flex" justifyContent="center" width="100%" mb={1}>
         <TextField
           variant="outlined"
           placeholder="Search by NIC number"
@@ -131,6 +173,29 @@ function EmployeeList({ onBack }) {
           }}
         />
       </Box>
+      <Divider sx={{ my: 1, background: '#e3eafc' }} />
+      {/* District filter dropdown below search bar */}
+      <Typography variant="subtitle1" align="center" sx={{ fontWeight: 500, color: '#1976d2', mb: 0.5 }}>
+        Filter Employees
+      </Typography>
+      <Box display="flex" justifyContent="center" width="100%" mb={3}>
+        <TextField
+          select
+          label="Filter by District"
+          value={districtFilter}
+          onChange={e => setDistrictFilter(e.target.value)}
+          sx={{ minWidth: 220, background: '#fff', borderRadius: 2 }}
+        >
+          <MenuItem value="">All Districts</MenuItem>
+          {districts.map(d => (
+            <MenuItem key={d} value={d}>{d}</MenuItem>
+          ))}
+        </TextField>
+      </Box>
+      <Divider sx={{ my: 1, background: '#e3eafc' }} />
+      <Typography variant="subtitle1" align="center" sx={{ fontWeight: 500, color: '#1976d2', mb: 0.5 }}>
+        Employee List
+      </Typography>
       {filtered.length === 0 ? (
         <Typography color="text.secondary" align="center">No employees found.</Typography>
       ) : (
@@ -216,6 +281,24 @@ function EmployeeList({ onBack }) {
             </Table>
           </TableContainer>
         </Box>
+      )}
+      {/* Chart summary below the table */}
+      {chartData.length > 0 && (
+        <Paper elevation={3} sx={{ mt: 4, p: 2, maxWidth: 700, mx: 'auto', background: '#f5f7fa' }}>
+          <Typography variant="h6" align="center" sx={{ fontWeight: 600, color: '#1976d2', mb: 2 }}>
+            Employee Count by District
+          </Typography>
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="district" fontSize={13} angle={-20} textAnchor="end" height={60} interval={0} />
+              <YAxis allowDecimals={false} fontSize={13} />
+              <RechartsTooltip />
+              <Legend />
+              <Bar dataKey="count" fill="#1976d2" name="Employees" barSize={32} />
+            </BarChart>
+          </ResponsiveContainer>
+        </Paper>
       )}
       <EmployeeProfile
         open={profileOpen}
