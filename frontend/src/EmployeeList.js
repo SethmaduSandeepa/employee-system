@@ -89,7 +89,7 @@ function EmployeeList({ onBack }) {
       <Typography variant="subtitle1" align="center" sx={{ fontWeight: 500, color: '#1976d2', mb: 0.5 }}>
         Export Data
       </Typography>
-      <Box display="flex" justifyContent="center" width="100%" mb={1}>
+      <Box display="flex" justifyContent="center" width="100%" gap={2} mb={1}>
         <Button
           variant="contained"
           color="primary"
@@ -126,6 +126,43 @@ function EmployeeList({ onBack }) {
           }}
         >
           Download CSV {districtFilter && districtFilter !== '' ? `(${districtFilter})` : ''}
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          sx={{ fontWeight: 600, borderRadius: 2, boxShadow: 'none', textTransform: 'none' }}
+          onClick={() => {
+            // Prepare CSV content for ALL employees (all districts)
+            const csvRows = [];
+            const headers = ['Full Name', 'NIC Number', 'Date of Birth', 'Age', 'Sex', 'District', 'Permanent Address', 'Temporary Address', 'Contact Details'];
+            csvRows.push(headers.join(','));
+            employees.forEach(emp => {
+              const row = [
+                emp.fullName,
+                emp.nicNumber,
+                new Date(emp.dateOfBirth).toLocaleDateString(),
+                emp.age,
+                emp.sex,
+                emp.district,
+                emp.permanentAddress,
+                emp.temporaryAddress,
+                emp.contactDetails
+              ].map(val => '"' + (val ? String(val).replace(/"/g, '""') : '') + '"').join(',');
+              csvRows.push(row);
+            });
+            const csvContent = csvRows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'employees_all_districts.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }}
+        >
+          Download All Districts CSV
         </Button>
       </Box>
       {/* Show titles only when all districts are selected */}
