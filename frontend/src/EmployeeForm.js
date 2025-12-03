@@ -53,7 +53,8 @@ function EmployeeForm({ onSuccess }) {
     if (!validate()) return;
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/employees', form);
+      const apiUrl = process.env.REACT_APP_API_URL || '';
+      await axios.post(`${apiUrl}/api/employees`, form);
       setMessage('Employee added successfully!');
       setForm({
         fullName: '', nicNumber: '', dateOfBirth: '', sex: '', district: '', permanentAddress: '', temporaryAddress: '', contactDetails: '', photo: ''

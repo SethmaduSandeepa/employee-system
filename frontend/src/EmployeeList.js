@@ -33,7 +33,8 @@ function EmployeeList({ onBack }) {
   const chartData = Object.entries(districtCounts).map(([district, count]) => ({ district, count }));
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/employees')
+    const apiUrl = process.env.REACT_APP_API_URL || '';
+    axios.get(`${apiUrl}/api/employees`)
       .then(res => {
         setEmployees(res.data);
         setLoading(false);

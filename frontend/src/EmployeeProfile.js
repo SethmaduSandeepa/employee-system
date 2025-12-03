@@ -13,7 +13,8 @@ function EmployeeProfile({ open, onClose, employee, onUpdate }) {
       if (!window.confirm('Are you sure you want to delete this employee?')) return;
       setDeleting(true);
       try {
-        await axios.delete(`http://localhost:5000/api/employees/${employee._id}`);
+        const apiUrl = process.env.REACT_APP_API_URL || '';
+        await axios.delete(`${apiUrl}/api/employees/${employee._id}`);
         if (onUpdate) onUpdate();
         onClose();
       } catch (err) {
@@ -46,7 +47,8 @@ function EmployeeProfile({ open, onClose, employee, onUpdate }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await axios.put(`http://localhost:5000/api/employees/${employee._id}`, form);
+      const apiUrl = process.env.REACT_APP_API_URL || '';
+      const res = await axios.put(`${apiUrl}/api/employees/${employee._id}`, form);
       setEdit(false);
       if (onUpdate) onUpdate(res.data); // Pass updated employee to parent
     } catch (err) {
