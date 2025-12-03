@@ -18,8 +18,13 @@ const AdminLogin = ({ onLogin }) => {
     setError('');
     setLoading(true);
     try {
-      // Call backend API for authentication
-      const res = await axios.post('/api/admin/login', { username, password });
+      // Use environment variable for backend URL
+      const apiUrl = process.env.REACT_APP_API_URL || '';
+      const res = await axios.post(
+        `${apiUrl}/api/admin/login`,
+        { username, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
       if (res.data && res.data.success) {
         setError('');
         if (onLogin) onLogin();
