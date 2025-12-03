@@ -15,6 +15,8 @@ function EmployeeList({ onBack }) {
   // State declarations must come first
   const [employees, setEmployees] = useState([]);
   const [districtFilter, setDistrictFilter] = useState('');
+  // Debug: log districtFilter after declaration
+  console.log('districtFilter:', districtFilter);
   // Get unique districts for dropdown
   const districts = Array.from(new Set(employees.map(emp => emp.district).filter(Boolean))).sort();
   const [loading, setLoading] = useState(true);
