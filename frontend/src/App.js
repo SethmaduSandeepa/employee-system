@@ -138,7 +138,7 @@ function App() {
           letterSpacing: 2,
         }}
       >
-        Produced by the TASMA IT Department
+        Empower HR Solutions
       </Box>
     </Box>
   );

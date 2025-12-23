@@ -47,7 +47,7 @@ const AdminLogin = ({ onLogin }) => {
           <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
             <img src={logoUrl} alt="Logo" style={{ width: 80, height: 80, marginBottom: 12, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 2px 12px #1976d233' }} />
             <Typography variant="h4" align="center" fontWeight={700} color="primary.main" gutterBottom>
-              Welcome to TASMA Employee Portal
+              Welcome to Empower HR Solutions
             </Typography>
           </Box>
           <Typography variant="subtitle1" align="center" color="text.secondary" mb={2}>

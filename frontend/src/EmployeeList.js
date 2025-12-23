@@ -83,7 +83,7 @@ function EmployeeList({ onBack }) {
       {/* Show titles only when all districts are selected */}
       {(!districtFilter || districtFilter === '') && (
         <>
-          <Typography variant="h4" align="center" sx={{ fontWeight: 700, color: '#1976d2', mb: 1, mt: 8, width: '100%' }}>TASMA EMPLOYEE SYSTEM</Typography>
+          <Typography variant="h4" align="center" sx={{ fontWeight: 700, color: '#1976d2', mb: 1, mt: 8, width: '100%' }}>EMPOWER HR SOLUTIONS</Typography>
           <Typography variant="h6" align="center" sx={{ fontWeight: 600, color: '#1976d2', mb: 2, mt: 1, width: '100%' }}>Employee List</Typography>
         </>
       )}
@@ -171,7 +171,7 @@ function EmployeeList({ onBack }) {
       {/* Show titles only when all districts are selected */}
       {(!districtFilter || districtFilter === '') && (
         <>
-          <Typography variant="h4" align="center" sx={{ fontWeight: 700, color: '#1976d2', mb: 2, mt: 60, width: '100%' }}>TASMA EMPLOYEE SYSTEM</Typography>
+          <Typography variant="h4" align="center" sx={{ fontWeight: 700, color: '#1976d2', mb: 2, mt: 60, width: '100%' }}>EMPOWER HR SOLUTIONS</Typography>
           <Typography variant="h6" align="center" sx={{ fontWeight: 600, color: '#1976d2', mb: 4, mt: 24, width: '100%' }}>Employee List</Typography>
         </>
       )}
