@@ -16,6 +16,22 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const { fullName, nicNumber, dateOfBirth, sex, district, permanentAddress, temporaryAddress, contactDetails, photo } = req.body;
 
+  // Input validation
+  if (!fullName || !nicNumber || !dateOfBirth || !sex || !district || !permanentAddress || !contactDetails) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  // Validate NIC number format (basic)
+  if (!/^[0-9]{9}[vVxX]?$/.test(nicNumber)) {
+    return res.status(400).json({ message: 'Invalid NIC number format' });
+  }
+
+  // Check if employee already exists
+  const existingEmployee = await Employee.findOne({ nicNumber });
+  if (existingEmployee) {
+    return res.status(400).json({ message: 'Employee with this NIC already exists' });
+  }
+
   // Auto-calculate age
   const dob = new Date(dateOfBirth);
   const today = new Date();
@@ -26,15 +42,15 @@ router.post('/', async (req, res) => {
   }
 
   const employee = new Employee({
-    fullName,
-    nicNumber,
+    fullName: fullName.trim(),
+    nicNumber: nicNumber.trim().toUpperCase(),
     dateOfBirth: dob,
     age,
     sex,
-    district,
-    permanentAddress,
-    temporaryAddress,
-    contactDetails,
+    district: district.trim(),
+    permanentAddress: permanentAddress.trim(),
+    temporaryAddress: temporaryAddress ? temporaryAddress.trim() : '',
+    contactDetails: contactDetails.trim(),
     photo
   });
 
@@ -42,9 +58,9 @@ router.post('/', async (req, res) => {
     const newEmployee = await employee.save();
     res.status(201).json(newEmployee);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: 'Error creating employee' });
   }
-});
+});;
 
 
 
