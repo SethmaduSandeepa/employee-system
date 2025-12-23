@@ -45,7 +45,6 @@ const AdminLogin = ({ onLogin }) => {
       <Box mt={10}>
         <Paper elevation={4} sx={{ p: 4, borderRadius: 3 }}>
           <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
-            <img src={logoUrl} alt="Logo" style={{ width: 80, height: 80, marginBottom: 12, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 2px 12px #1976d233' }} />
             <Typography variant="h4" align="center" fontWeight={700} color="primary.main" gutterBottom>
               Welcome to Empower HR Solutions
             </Typography>
